@@ -7,24 +7,28 @@ export class ProductsController {
     constructor(private readonly productService: ProductService){}
 
     @Post()
-    addProduct(
+    async addProduct(
         @Body('name') prodName:string,
         @Body('description') prodDesc:string,
         @Body('price') prodPrice:number
-    ): any{
+    ){
 
-        const pId = this.productService.insertProduct(prodName,prodDesc,prodPrice);
+        const pId = await this.productService.insertProduct(prodName,prodDesc,prodPrice);
         return {id : pId};
     }
 
     @Get()
-    getAllproducts(){
-        return this.productService.fetchProducts();
+    async getAllproducts(){
+        const products = await this.productService.fetchProducts();
+        return products;
     }
 
     @Get(':id')
-    getSingleProduct(@Param('id') prodId:string){
-        return this.productService.getSingleProd(prodId);
+    async getSingleProduct(@Param('id') prodId:string){
+
+        const product = await this.productService.getSingleProd(prodId);
+        return product;
+        
     }
 
     @Patch(':id')
